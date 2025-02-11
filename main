@@ -1,0 +1,37 @@
+import discord
+from discord.ext import commands
+
+# Imposta il prefisso dei comandi e abilita i permessi intent
+intents = discord.Intents.default()
+intents.messages = True
+intents.guilds = True
+intents.message_content = True  # Necessario per leggere i messaggi
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"{bot.user.name} è online!")
+
+@bot.command()
+async def ping(ctx):
+    """Risponde con 'Pong!' e mostra la latenza."""
+    latency = round(bot.latency * 1000)  # Converti in ms
+    await ctx.send(f'Pong! 🏓 ({latency}ms)')
+
+@bot.command()
+async def say(ctx, *, message: str):
+    """Il bot ripete il messaggio dell'utente."""
+    await ctx.send(message)
+
+@bot.command()
+async def info(ctx):
+    """Mostra informazioni sul bot."""
+    embed = discord.Embed(title="Info Bot", description="Un semplice bot Discord.", color=discord.Color.blue())
+    embed.add_field(name="Sviluppato da", value="Il tuo nome")
+    embed.set_footer(text="Bot creato con discord.py")
+    await ctx.send(embed=embed)
+
+# Inserisci qui il tuo token
+TOKEN = "IL_TUO_TOKEN"
+bot.run(TOKEN)
